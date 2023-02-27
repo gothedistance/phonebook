@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phonebook/main.dart';
 
 class CreateNumberPage extends StatefulWidget {
   CreateNumberPage({super.key});

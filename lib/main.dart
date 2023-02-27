@@ -58,7 +58,7 @@ class PhoneListState<PhoneListPage> extends State {
           child: const Icon(Icons.add),
           onPressed: () async {
             final result = await Navigator.of(context)
-                .push<PhoneModel>(MaterialPageRoute(builder: (context) {
+                .push(MaterialPageRoute(builder: (context) {
               return CreateNumberPage();
             }));
             setState(() {
