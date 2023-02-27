@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
 
 class PhoneModel {
   PhoneModel({required this.name, required this.number});
-  String name = '';
-  String number = '';
+  String? name = '';
+  String? number = '';
 }
 
 class PhoneListPage extends StatefulWidget {
@@ -47,8 +47,8 @@ class PhoneListState<PhoneListPage> extends State {
               itemCount: _phoneList.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_phoneList[index].name),
-                  subtitle: Text(_phoneList[index].number),
+                  title: Text(_phoneList[index].name ?? ''),
+                  subtitle: Text(_phoneList[index].number ?? ''),
                 );
               })
           : const Center(
@@ -57,14 +57,14 @@ class PhoneListState<PhoneListPage> extends State {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () async {
-            final PhoneModel? result = await Navigator.of(context)
+            final result = await Navigator.of(context)
                 .push<PhoneModel>(MaterialPageRoute(builder: (context) {
               return CreateNumberPage();
             }));
             setState(() {
               _phoneList.add(PhoneModel(
-                name: result.name,
-                number: result.number,
+                name: result?.name,
+                number: result?.number,
               ));
             });
           }),

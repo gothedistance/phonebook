@@ -63,7 +63,7 @@ class CreateNumberState<CreateNumberPage> extends State {
             final PhoneModel modelObject = PhoneModel(
                 name: _inputNameController.text,
                 number: _inputNumberController.text);
-            Navigator.of(context).pop<PhoneModel>(modelObject);
+            Navigator.of(context).pop(modelObject);
           }
         },
       ),
