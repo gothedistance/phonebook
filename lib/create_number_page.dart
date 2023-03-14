@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CreateNumberPage extends StatefulWidget {
-  CreateNumberPage({super.key});
+  CreateNumberPage({super.key, this.name, this.number});
+  String? name;
+  String? number;
 
   @override
-  State<StatefulWidget> createState() => CreateNumberState<CreateNumberPage>();
+  State<StatefulWidget> createState() => CreateNumberState();
 }
 
 class PhoneModel {
@@ -13,7 +15,7 @@ class PhoneModel {
   String number = '';
 }
 
-class CreateNumberState<CreateNumberPage> extends State {
+class CreateNumberState extends State<CreateNumberPage> {
   final TextEditingController _inputNameController = TextEditingController();
   final TextEditingController _inputNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -36,6 +38,7 @@ class CreateNumberState<CreateNumberPage> extends State {
           child: Column(
             children: [
               TextFormField(
+                  initialValue: widget.name ?? "",
                   decoration: const InputDecoration(labelText: 'name'),
                   controller: _inputNameController,
                   validator: (value) {
@@ -45,6 +48,7 @@ class CreateNumberState<CreateNumberPage> extends State {
                     return null;
                   }),
               TextFormField(
+                  initialValue: widget.number ?? "",
                   decoration: const InputDecoration(labelText: 'number'),
                   controller: _inputNumberController,
                   validator: (value) {

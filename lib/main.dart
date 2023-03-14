@@ -50,12 +50,16 @@ class PhoneListState<PhoneListPage> extends State {
                   title: Text(_phoneList[index].name ?? ''),
                   subtitle: Text(_phoneList[index].number ?? ''),
                   onTap: () async {
-                    String name = _phoneList[index].name ?? '';
-                    String number = _phoneList[index].number ?? '';
                     final result = await Navigator.of(context)
                         .push(MaterialPageRoute(builder: ((context) {
-                      return CreateNumberPage();
+                      return CreateNumberPage(
+                          name: _phoneList[index].name ?? '',
+                          number: _phoneList[index].number ?? '');
                     })));
+                    setState(() {
+                      _phoneList[index].name = result.name;
+                      _phoneList[index].number = result.number;
+                    });
                   },
                 );
               })
