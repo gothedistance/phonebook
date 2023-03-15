@@ -30,10 +30,10 @@ class PhoneListPage extends StatefulWidget {
   const PhoneListPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => PhoneListState<PhoneListPage>();
+  State createState() => PhoneListState();
 }
 
-class PhoneListState<PhoneListPage> extends State {
+class PhoneListState extends State {
   List<PhoneModel> _phoneList = <PhoneModel>[];
 
   @override
@@ -51,14 +51,15 @@ class PhoneListState<PhoneListPage> extends State {
                   subtitle: Text(_phoneList[index].number ?? ''),
                   onTap: () async {
                     final result = await Navigator.of(context)
-                        .push(MaterialPageRoute(builder: ((context) {
-                      return CreateNumberPage(
-                          name: _phoneList[index].name ?? '',
-                          number: _phoneList[index].number ?? '');
+                        .push<PhoneModel?>(
+                            MaterialPageRoute(builder: ((context) {
+                      return CreateNumberPage(phoneModel: _phoneList[index]);
                     })));
                     setState(() {
-                      _phoneList[index].name = result.name;
-                      _phoneList[index].number = result.number;
+                      if (result != null) {
+                        _phoneList[index].name = result.name;
+                        _phoneList[index].number = result.number;
+                      }
                     });
                   },
                 );
@@ -71,7 +72,8 @@ class PhoneListState<PhoneListPage> extends State {
           onPressed: () async {
             final result = await Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) {
-              return CreateNumberPage();
+              return CreateNumberPage(
+                  phoneModel: PhoneModel(name: '', number: ''));
             }));
             setState(() {
               _phoneList.add(PhoneModel(

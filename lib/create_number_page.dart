@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'main.dart';
+
 class CreateNumberPage extends StatefulWidget {
-  CreateNumberPage({super.key, this.name, this.number});
-  String? name;
-  String? number;
+  CreateNumberPage({super.key, required this.phoneModel});
+  PhoneModel phoneModel;
 
   @override
   State<StatefulWidget> createState() => CreateNumberState();
-}
-
-class PhoneModel {
-  PhoneModel({required this.name, required this.number});
-  String name = '';
-  String number = '';
 }
 
 class CreateNumberState extends State<CreateNumberPage> {
@@ -38,9 +33,9 @@ class CreateNumberState extends State<CreateNumberPage> {
           child: Column(
             children: [
               TextFormField(
-                  initialValue: widget.name ?? "",
                   decoration: const InputDecoration(labelText: 'name'),
-                  controller: _inputNameController,
+                  controller: _inputNameController
+                    ..text = widget.phoneModel.name ?? '',
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '名前を入力してください';
@@ -48,9 +43,9 @@ class CreateNumberState extends State<CreateNumberPage> {
                     return null;
                   }),
               TextFormField(
-                  initialValue: widget.number ?? "",
                   decoration: const InputDecoration(labelText: 'number'),
-                  controller: _inputNumberController,
+                  controller: _inputNumberController
+                    ..text = widget.phoneModel.number ?? '',
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '番号を入力してください';
