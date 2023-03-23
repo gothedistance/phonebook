@@ -46,23 +46,35 @@ class PhoneListState extends State {
           ? ListView.builder(
               itemCount: _phoneList.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_phoneList[index].name ?? ''),
-                  subtitle: Text(_phoneList[index].number ?? ''),
-                  onTap: () async {
-                    final result = await Navigator.of(context)
-                        .push<PhoneModel?>(
-                            MaterialPageRoute(builder: ((context) {
-                      return CreateNumberPage(phoneModel: _phoneList[index]);
-                    })));
-                    setState(() {
-                      if (result != null) {
-                        _phoneList[index].name = result.name;
-                        _phoneList[index].number = result.number;
-                      }
+                return Dismissible(
+                    key: UniqueKey(),
+                    background: Container(
+                      color: Colors.red,
+                      child: Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: ListTile(
+                      title: Text(_phoneList[index].name ?? ''),
+                      subtitle: Text(_phoneList[index].number ?? ''),
+                      onTap: () async {
+                        final result = await Navigator.of(context)
+                            .push<PhoneModel?>(
+                                MaterialPageRoute(builder: ((context) {
+                          return CreateNumberPage(
+                              phoneModel: _phoneList[index]);
+                        })));
+                        setState(() {
+                          if (result != null) {
+                            _phoneList[index].name = result.name;
+                            _phoneList[index].number = result.number;
+                          }
+                        });
+                      },
+                    ),
+                    onDismissed: (direction) {
+                      setState(() {
+                        _phoneList.removeAt(index);
+                      });
                     });
-                  },
-                );
               })
           : const Center(
               child: Text('登録がありません。', style: TextStyle(fontSize: 20)),
@@ -75,12 +87,14 @@ class PhoneListState extends State {
               return CreateNumberPage(
                   phoneModel: PhoneModel(name: '', number: ''));
             }));
-            setState(() {
-              _phoneList.add(PhoneModel(
-                name: result?.name,
-                number: result?.number,
-              ));
-            });
+            if (result != null) {
+              setState(() {
+                _phoneList.add(PhoneModel(
+                  name: result?.name,
+                  number: result?.number,
+                ));
+              });
+            }
           }),
     );
   }
