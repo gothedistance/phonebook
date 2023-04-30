@@ -21,9 +21,21 @@ class MyApp extends StatelessWidget {
 }
 
 class PhoneModel {
-  PhoneModel({required this.name, required this.number});
-  String? name = '';
-  String? number = '';
+  PhoneModel(
+      {required this.lastName,
+      required this.lastNameKana,
+      required this.firstName,
+      required this.firstNameKana,
+      required this.phoneNumber,
+      this.email = '',
+      this.description = ''});
+  String lastName;
+  String lastNameKana;
+  String firstName;
+  String firstNameKana;
+  String phoneNumber;
+  String? email;
+  String? description;
 }
 
 class PhoneListPage extends StatefulWidget {
@@ -40,7 +52,41 @@ class PhoneListState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PhoneBook'),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text('連絡先', style: TextStyle(color: Colors.black)),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            iconSize: 40,
+            color: Colors.blue,
+            onPressed: () async {
+              final result = await Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) {
+                return CreateNumberPage(
+                  phoneModel: PhoneModel(
+                      lastName: '',
+                      lastNameKana: '',
+                      firstName: '',
+                      firstNameKana: '',
+                      phoneNumber: ''),
+                );
+              }));
+              if (result != null) {
+                setState(() {
+                  _phoneList.add(PhoneModel(
+                      lastName: result?.lastName,
+                      lastNameKana: result?.lastNameKana,
+                      firstName: result?.firstName,
+                      firstNameKana: result?.firstNameKana,
+                      phoneNumber: result?.phoneNumber,
+                      email: result?.email,
+                      description: result?.description));
+                });
+              }
+            },
+          ),
+        ],
       ),
       body: _phoneList.isNotEmpty
           ? ListView.builder(
@@ -53,8 +99,8 @@ class PhoneListState extends State {
                       child: Icon(Icons.delete, color: Colors.white),
                     ),
                     child: ListTile(
-                      title: Text(_phoneList[index].name ?? ''),
-                      subtitle: Text(_phoneList[index].number ?? ''),
+                      title: Text(_phoneList[index].firstName ?? ''),
+                      subtitle: Text(_phoneList[index].phoneNumber ?? ''),
                       onTap: () async {
                         final result = await Navigator.of(context)
                             .push<PhoneModel?>(
@@ -64,8 +110,8 @@ class PhoneListState extends State {
                         })));
                         setState(() {
                           if (result != null) {
-                            _phoneList[index].name = result.name;
-                            _phoneList[index].number = result.number;
+                            _phoneList[index].firstName = result.firstName;
+                            _phoneList[index].phoneNumber = result.phoneNumber;
                           }
                         });
                       },
@@ -77,25 +123,8 @@ class PhoneListState extends State {
                     });
               })
           : const Center(
-              child: Text('登録がありません。', style: TextStyle(fontSize: 20)),
+              child: Text('連絡先なし', style: TextStyle(fontSize: 30)),
             ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () async {
-            final result = await Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) {
-              return CreateNumberPage(
-                  phoneModel: PhoneModel(name: '', number: ''));
-            }));
-            if (result != null) {
-              setState(() {
-                _phoneList.add(PhoneModel(
-                  name: result?.name,
-                  number: result?.number,
-                ));
-              });
-            }
-          }),
     );
   }
 }

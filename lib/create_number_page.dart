@@ -25,17 +25,56 @@ class CreateNumberState extends State<CreateNumberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AddDate'),
+        appBar: AppBar(
+          elevation: 0,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(0),
+            child: Container(
+              color: Colors.white, // 背景色と同じにすることで線を消す
+            ),
+          ),
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.black),
+          title: const Text('連絡先追加', style: TextStyle(color: Colors.black)),
+        ),
+        body: Container(
+          child: Column(children: [
+            Container(
+                alignment: Alignment.topCenter,
+                child: const Icon(
+                  Icons.account_circle,
+                  size: 100,
+                  color: Colors.blue,
+                )),
+            const Divider(
+              height: 5,
+              thickness: 0.3,
+              color: Colors.black,
+            ),
+            Row(
+              children: [TextField()],
+            )
+          ]),
+        )
+        /*
+      Container(
+        alignment: Alignment.topCenter,
+        child: Icon(
+          Icons.account_circle,
+          size: 100,
+          color: Colors.blue,
+        ),
       ),
-      body: Form(
+*/
+/*
+      Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
-                  decoration: const InputDecoration(labelText: 'name'),
+                  decoration: const InputDecoration(labelText: 'aaaa'),
                   controller: _inputNameController
-                    ..text = widget.phoneModel.name ?? '',
+                    ..text = widget.phoneModel.firstName ?? '',
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '名前を入力してください';
@@ -45,7 +84,7 @@ class CreateNumberState extends State<CreateNumberPage> {
               TextFormField(
                   decoration: const InputDecoration(labelText: 'number'),
                   controller: _inputNumberController
-                    ..text = widget.phoneModel.number ?? '',
+                    ..text = widget.phoneModel.phoneNumber ?? '',
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '番号を入力してください';
@@ -54,17 +93,25 @@ class CreateNumberState extends State<CreateNumberPage> {
                   })
             ],
           )),
+*/
+/*
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             final PhoneModel modelObject = PhoneModel(
-                name: _inputNameController.text,
-                number: _inputNumberController.text);
+                lastName: _inputNameController.text,
+                lastNameKana: '',
+                firstName: '',
+                firstNameKana: '',
+                phoneNumber: _inputNumberController.text,
+                email: '',
+                description: '');
             Navigator.of(context).pop(modelObject);
           }
         },
       ),
-    );
+*/
+        );
   }
 }
